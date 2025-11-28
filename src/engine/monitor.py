@@ -1,3 +1,5 @@
+#Author: Ornella Kim Gasková
+
 import time
 from src.core.shared import orders_map, orders_map_lock, print_lock, stop
 

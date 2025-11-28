@@ -1,3 +1,5 @@
+#Author: Ornella Kim Gasková
+
 import time
 import random
 from src.core.shared import incoming_queue, ready_queue, print_lock, stop

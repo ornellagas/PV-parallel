@@ -1,3 +1,5 @@
+#Author: Ornella Kim Gasková
+
 import time
 from src.core.shared import ready_queue, couriers_map, couriers_map_lock, print_lock, stop
 

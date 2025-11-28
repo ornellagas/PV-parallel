@@ -1,3 +1,5 @@
+#Author: Ornella Kim Gasková
+
 import threading
 import time
 from core.shared import orders_map, orders_map_lock

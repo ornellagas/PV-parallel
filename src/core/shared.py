@@ -1,3 +1,5 @@
+#Author: Ornella Kim Gasková
+
 import queue
 import threading
 

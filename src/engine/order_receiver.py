@@ -1,3 +1,5 @@
+#Author: Ornella Kim Gasková
+
 import time
 import random
 from src.models.order import Order
