@@ -1,6 +1,6 @@
-# Paralelní objednávkový systém pro kurýry
+# Paralelní logistický a objednávkový systém
 
-Tento projekt simuluje systém restaurace s paralelními vlákny pro příjem objednávek, přípravu jídla, přiřazování kurýrů a doručení. Ukazuje praktické použití souběžného programování a synchronizace sdílených zdrojů.
+Tento projekt simuluje pokročilý systém restaurace s paralelními vlákny pro příjem objednávek přes API, přípravu jídla, automatické přiřazování kurýrů a real-time monitoring přes WebSockety. Ukazuje kombinaci vícevláknového (Multi-threading) a asynchronního programování.
 
 ---
 
@@ -8,10 +8,10 @@ Tento projekt simuluje systém restaurace s paralelními vlákny pro příjem ob
 
 Projekt obsahuje tyto hlavní funkce:
 
-- **Order Receiver** – přijímá nové objednávky a ukládá je do fronty.
-- **Kitchen Workers** – paralelně připravují objednávky z fronty.
-- **Assignment Engine** – přiřazuje volné kurýry k připraveným objednávkám a simuluje doručení.
-- **Monitor** – zobrazuje aktuální stav všech objednávek a ukončí se, jakmile jsou všechny doručeny.
+- **FastAPI Receiver** – přijímá objednávky přes HTTP POST a okamžitě je zařazuje do systému.
+- **Kitchen Workers** – paralelní vlákna kuchařů, která zpracovávají objednávky z fronty a simulují přípravu.
+- **Assignment Engine** – automatický dispečer, který páruje hotová jídla s volnými kurýry a zajišťuje doručení.
+- **Real-time Dashboard** – webové rozhraní, které pomocí WebSocketů živě zobrazuje každou změnu stavu bez nutnosti obnovy stránky.
 
 ---
 
@@ -19,33 +19,32 @@ Projekt obsahuje tyto hlavní funkce:
 
 Projekt je rozdělen modulárně:
 
-- **core/shared.py** – sdílené proměnné, fronty, mapy objednávek a kurýrů, locky pro synchronizaci.
-- **models/order.py** – definice třídy `Order`.
-- **engine/order_receiver.py** – generování a příjem objednávek.
-- **engine/kitchen_worker.py** – vlákna kuchařů pro přípravu objednávek.
-- **engine/assignment.py** – přiřazování kurýrů a simulace doručení.
-- **engine/monitor.py** – vlákno monitoru pro sledování stavu systému.
-- **main.py** – hlavní spouštěcí soubor.
+- **core/shared.py** – komunikační jádro: fronty, zámky (locks) a WebSocket manager pro rozesílání zpráv.
+- **models/order.py** & **models/courier.py** – definice datových tříd pro objednávky a kurýry.
+- **engine/api.py** – definice API endpointů a interaktivního HTML dashboardu.
+- **engine/kitchen_worker.py** – logika kuchařů pracujících v paralelních vláknech.
+- **engine/assignment.py** – logika dispečinku a správa doručování.
+- **engine/init_couriers.py** – inicializace počátečního počtu kurýrů.
+- **main.py** – hlavní spouštěcí soubor, který koordinuje start všech vláken a serveru.
 
 ---
 
 ## Konfigurace
 
-Nastavení systému je možné v několika místech:
-
-- **core/shared.py**:
-  - `MAX_ORDERS` – maximální počet objednávek, po kterém se systém ukončí.
-  - `stop` – globální flag pro ukončení vláken.
+Nastavení systému je možné v těchto místech:
 
 - **main.py**:
-  - `NUM_KITCHEN_WORKERS` – počet paralelních kuchařů.
-  - `NUM_COURIERS` – počet paralelních kurýrů.
+  - `init_couriers(5)` – počet kurýrů v systému.
+  - `range(1, 4)` – počet paralelně běžících kuchařů.
+
+- **engine/kitchen_worker.py**:
+  - `random.uniform(3, 6)` – délka přípravy jídla (v sekundách).
 
 ---
 
 ## Spuštění
 
-1. Ujistěte se, že máte nainstalovaný Python 3.7 nebo vyšší.
+1. Ujistěte se, že máte nainstalovaný Python 3.10+ a knihovny `fastapi` a `uvicorn`.
 2. Otevřete terminál ve složce projektu.
 3. Spusťte hlavní soubor příkazem:
 

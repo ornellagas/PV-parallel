@@ -1,28 +1,27 @@
-#Author: Ornella Kim Gasková
+# Author: Ornella Kim Gasková
 
 import time
 import random
-from src.core.shared import incoming_queue, ready_queue, print_lock, stop
+from core.shared import incoming_queue, ready_queue, stop, emit_event
 
+# Reprezentuje kuchaře. Konzumuje objednávky z incoming_queue a produkuje hotová jídla do ready_queue
 def kitchen_worker(worker_id):
-    while not stop or not incoming_queue.empty():
+    while not stop:
         try:
-            order = incoming_queue.get(timeout=1)
+            # Čekání na objednávku (timeout zajistí, že thread může skončit při stop=True)
+            order = incoming_queue.get(timeout=2)
         except Exception:
             continue
 
+        # Změna stavu a oznámení dashboardu
         order.status = "PREPARING"
-        with print_lock:
-            print(f"[Kitchen Worker {worker_id}] Preparing order {order.id}")
+        emit_event("KITCHEN_BUSY", order.id, "PREPARING", f"Chef {worker_id} is cooking...")
 
-        time.sleep(random.uniform(1, 2))  # simulace vaření
+        # Simulace reálné práce (každé jídlo trvá jinak dlouho)
+        time.sleep(random.uniform(3, 6))
 
         order.status = "READY"
         ready_queue.put(order)
-        with print_lock:
-            print(f"[Kitchen Worker {worker_id}] Order {order.id} ready")
+        emit_event("KITCHEN_DONE", order.id, "READY", f"Chef {worker_id} finished.")
 
         incoming_queue.task_done()
-
-    with print_lock:
-        print(f"[Kitchen Worker {worker_id}] Exiting, no more orders.")

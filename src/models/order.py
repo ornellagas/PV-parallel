@@ -1,3 +1,5 @@
+# Author: Ornella Kim Gasková
+
 class Order:
     def __init__(self, order_id, restaurant_location, customer_location):
         self.id = order_id
