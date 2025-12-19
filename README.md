@@ -44,7 +44,7 @@ Nastavení systému je možné v těchto místech:
 
 ## Spuštění
 
-1. Ujistěte se, že máte nainstalovaný Python 3.10+ a knihovny `fastapi` a `uvicorn`.
+1. Ujistěte se, že máte nainstalovaný Python 3.10+ a knihovny `fastapi` a `uvicorn`. (pip install fastapi uvicorn)
 2. Otevřete terminál ve složce projektu.
 3. Spusťte hlavní soubor příkazem:
 
