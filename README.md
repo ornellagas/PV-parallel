@@ -47,6 +47,7 @@ Nastavení systému je možné v těchto místech:
 1. Ujistěte se, že máte nainstalovaný Python 3.10+ a knihovny `fastapi` a `uvicorn`. (pip install fastapi uvicorn)
 2. Otevřete terminál ve složce projektu.
 3. Spusťte hlavní soubor příkazem:
+4. Můžeme otestovat napsáním do terminálu: Invoke-RestMethod -Uri http://127.0.0.1:8000/orders -Method Post -Body '{"items": ["Burger", "Pizza"], "address": "Dlouhá 15, Praha"}' -ContentType "application/json"
 
 ```bash
 python src/main.py
